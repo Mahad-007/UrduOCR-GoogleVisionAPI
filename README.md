@@ -17,3 +17,4 @@ This script extracts text from images containing Urdu text using Google Vision A
 3. Run the script: `python script.py`.
 
 ## Example Output
+Extracted Urdu Text: یہ ایک مثال ہے
