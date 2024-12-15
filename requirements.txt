@@ -1,0 +1,4 @@
+Requirements:
+- Python 3.x
+- Google Cloud Vision API enabled on your Google Cloud Project
+- Google API key or Service Account for authentication

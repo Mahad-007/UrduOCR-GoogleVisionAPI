@@ -1,0 +1,54 @@
+import requests
+import base64
+
+# Your Gemini/Google API Key (Keep it secure!)
+API_KEY = 'AIzaSyAVgQOhEV9j2m-Hta1ZGo-v3HrZwTW5Fq8'
+
+# Path to your image file (JPG format)
+image_path =  r'E:\CLE\1. lines\EXP\Faelaat_pg3_ln4.jpg'
+
+# Function to convert image to base64
+def convert_image_to_base64(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode("utf-8")
+
+# Convert image to base64
+image_base64 = convert_image_to_base64(image_path)
+
+# Google Vision API endpoint
+vision_api_url = f'https://vision.googleapis.com/v1/images:annotate?key={API_KEY}'
+
+# Request payload for OCR
+request_payload = {
+    "requests": [
+        {
+            "image": {
+                "content": image_base64
+            },
+            "features": [
+                {
+                    "type": "TEXT_DETECTION"  # Use "DOCUMENT_TEXT_DETECTION" for more structured OCR
+                }
+            ],
+            "imageContext": {
+                "languageHints": ["ur"]  # 'ur' is the language code for Urdu
+            }
+        }
+    ]
+}
+
+# Make the request to Google Vision API
+response = requests.post(vision_api_url, json=request_payload)
+
+# Parse the response
+if response.status_code == 200:
+    ocr_data = response.json()
+    
+    # Extract detected text
+    try:
+        detected_text = ocr_data['responses'][0]['fullTextAnnotation']['text']
+        print("Extracted Urdu Text:\n", detected_text)
+    except KeyError:
+        print("No text found in the image.")
+else:
+    print(f"Error {response.status_code}: {response.text}")
